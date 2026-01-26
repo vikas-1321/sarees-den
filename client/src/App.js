@@ -6,7 +6,7 @@ import axios from 'axios';
 import { db, auth } from './firebase'; 
 
 // 2. Import the FUNCTIONS from the official firebase library (this is the fix!)
-import { collection, onSnapshot, doc, getDoc, addDoc } from 'firebase/firestore'; 
+import { collection, onSnapshot, doc, getDoc, } from 'firebase/firestore'; 
 
 // 3. Your Components
 import SareeCard from './components/SareeCard';
@@ -83,32 +83,33 @@ function App() {
     if (!user) return alert("Please login to checkout!");
     
     try {
-        const orderPayload = {
-            cart: cart,
-            totalAmount: total,
-            userId: user.uid,
-            customerName: user.fullName,
-            customerPhone: user.phone,
-            customerAddress: user.address,
-            pincode: user.pincode,
-            date: new Date(),
-            status: "confirmed"
-        };
+        // 1. Reduce Stock on Server
+        const res = await axios.post(`${API_URL}/checkout`, { 
+            cart: cart.map(item => ({ id: item.id, quantity: item.quantity })) 
+        });
 
-        // 1. Send to server to update inventory
-        const res = await axios.post(`${API_URL}/checkout`, { cart });
-
-        // 2. Save order details to Firestore for the Admin
         if (res.data.success) {
-            await addDoc(collection(db, "orders"), orderPayload);
-            alert("Order Success! The Admin will see your details.");
+            // 2. Save Order Details to Firestore
+            const { addDoc, collection } = await import('firebase/firestore');
+            await addDoc(collection(db, "orders"), {
+                cart: cart,
+                totalAmount: total,
+                userId: user.uid,
+                customerName: user.fullName || "Guest",
+                customerPhone: user.phone || "N/A",
+                customerAddress: user.address || "N/A",
+                date: new Date(),
+                status: "confirmed"
+            });
+
+            alert("Order Success!");
             setCart([]);
         }
     } catch (err) {
-        alert("Checkout failed. Check if server is running!");
+        console.error("Checkout Error:", err);
+        alert(`Checkout failed: ${err.response?.data?.error || "Server is offline"}`);
     }
 };
-  
 
   return (
     <Router>

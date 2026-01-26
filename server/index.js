@@ -7,6 +7,7 @@ const cloudinary = require('cloudinary').v2;
 const admin = require('firebase-admin');
 
 const app = express();
+// const cors = require('cors'); // npm install cors
 app.use(cors());
 app.use(express.json());
 
@@ -26,11 +27,9 @@ cloudinary.config({
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
 const serviceAccount = require("./serviceAccountKey.json");
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-    });
-}
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 const db = admin.firestore();
 
 // 4. MULTER CONFIG
