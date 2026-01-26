@@ -1,0 +1,174 @@
+:root {
+  --maroon: #800000;
+  --gold: #D4AF37;
+  --cream: #FFFDD0;
+}
+
+body { margin: 0; font-family: 'Playfair Display', serif; background: var(--cream); }
+
+.nav-bar { background: var(--maroon); color: var(--gold); padding: 1rem; display: flex; justify-content: space-between; }
+.saree-card { background: white; border: 1px solid var(--gold); padding: 10px; border-radius: 8px; transition: transform 0.2s; }
+.saree-card:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(128,0,0,0.2); }
+.btn-primary { background: var(--maroon); color: var(--gold); border: 1px solid var(--gold); padding: 8px 16px; cursor: pointer; font-weight: bold; }
+.btn-primary:disabled { background: #ccc; color: #666; cursor: not-allowed; }
+
+.shop-container { display: flex; padding: 40px; gap: 30px; }
+.product-grid { flex: 3; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.cart-sidebar { flex: 1; background: white; padding: 20px; border: 1px solid var(--gold); border-radius: 8px; height: fit-content; }
+.cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; }
+.logo { color: var(--gold); font-size: 1.8rem; font-weight: 800; text-decoration: none; }
+.text-maroon { color: var(--maroon); }
+.w-full { width: 100%; }
+.category { color: #666; font-style: italic; margin-top: -10px; }
+
+.nav-links .admin-btn {
+  background: var(--gold);
+  color: var(--maroon) !important;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--gold);
+}
+
+.item-name { font-weight: bold; margin: 0; color: var(--maroon); }
+.item-qty { font-size: 0.8rem; margin: 0; color: #666; }
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: var(--maroon);
+}
+
+.checkout-btn {
+  padding: 15px;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.login-btn {
+  color: white;
+  text-decoration: none;
+  border: 1px solid var(--gold);
+  padding: 5px 15px;
+  border-radius: 4px;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.logout-btn:hover {
+  background: white;
+  color: var(--maroon);
+}
+
+.auth-form textarea {
+  padding: 10px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.toggle-auth {
+  cursor: pointer;
+  color: var(--maroon);
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  text-decoration: underline;
+}
+
+.role-select {
+  padding: 10px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: #fff8f0; /* Light cream background */
+  color: var(--maroon);
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.role-select:focus {
+  outline: none;
+  border-color: var(--maroon);
+}
+
+.manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+.manage-table th, .manage-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.manage-table th {
+    background-color: var(--gold);
+    color: var(--maroon);
+}
+
+.edit-btn {
+    background: var(--maroon);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.delete-btn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.status-badge {
+    background: #e6f4ea;
+    color: #1e7e34;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.orders-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}

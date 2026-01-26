@@ -1,0 +1,14 @@
+:root {
+  --maroon: #800000;
+  --gold: #D4AF37;
+  --cream: #FFFDD0; /* Good background contrast */
+  --black: #1a1a1a;
+}
+
+button.primary {
+  background-color: var(--maroon);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 10px 20px;
+  cursor: pointer;
+}
