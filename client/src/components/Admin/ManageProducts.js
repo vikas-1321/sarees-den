@@ -43,11 +43,16 @@ const ManageProducts = () => {
                 </thead>
                 <tbody>
                     {products.map(p => (
-                        <tr key={p.id}>
-                            <td><img src={p.image} alt="" width="50" /></td>
-                            <td>{p.name}</td>
-                            <td>₹{p.price}</td>
-                            <td>{p.stock}</td>
+                        <tr key={p.id} style={{ backgroundColor: p.stock < 3 ? '#fff0f0' : 'transparent' }}>
+    <td><img src={p.image} width="50" alt="" /></td>
+    <td>{p.name}</td>
+    <td>₹{p.price}</td>
+    <td style={{ 
+        color: p.stock < 3 ? 'red' : 'black', 
+        fontWeight: p.stock < 3 ? 'bold' : 'normal' 
+    }}>
+        {p.stock} {p.stock < 3 && "⚠️ LOW STOCK"}
+    </td>
                             <td>
                                 <button onClick={() => handleUpdateStock(p.id, p.stock)} className="edit-btn">Stock</button>
                                 <button onClick={() => handleDelete(p.id)} className="delete-btn">Delete</button>

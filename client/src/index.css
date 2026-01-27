@@ -172,3 +172,140 @@ body { margin: 0; font-family: 'Playfair Display', serif; background: var(--crea
     margin-top: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
+
+/* Filter Bar Container */
+.filter-bar {
+  display: flex;
+  gap: 25px;
+  padding: 20px;
+  background: #fffcf5; /* Subtle cream background */
+  border-bottom: 2px solid var(--gold);
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Search Input */
+.search-input {
+  padding: 10px 15px;
+  border: 1px solid var(--gold);
+  border-radius: 25px;
+  width: 250px;
+  outline: none;
+  font-family: 'Playfair Display', serif;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 5px var(--maroon);
+  border-color: var(--maroon);
+}
+
+/* Category Select */
+.filter-select {
+  padding: 10px;
+  border: 1px solid var(--gold);
+  border-radius: 5px;
+  background: white;
+  color: var(--maroon);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Price Slider Section */
+.price-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: var(--maroon);
+  font-weight: bold;
+  min-width: 150px;
+}
+
+.price-slider input[type="range"] {
+  accent-color: var(--maroon);
+  cursor: pointer;
+  width: 100%;
+}
+
+/* No Products Found Styling */
+.no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  color: #888;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+}
+
+.image-wrapper {
+  position: relative; /* Necessary for the heart button placement */
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+}
+
+.rating-display {
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.low-stock {
+  color: #ff4d4d;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.clear-btn {
+    background: transparent;
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+.empty-wishlist {
+    text-align: center;
+    padding: 100px 20px;
+    color: #888;
+    border: 2px dashed var(--gold);
+    border-radius: 10px;
+}
