@@ -1,87 +1,234 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const AddSaree = () => {
-    const [file, setFile] = useState(null);
-    const [form, setForm] = useState({
-        name: '',
-        price: '',
-        stock: '',
-        category: 'Kanjeevaram Silk' // Default category
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
+    description: "",
+  });
+
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Handle text inputs
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
-    const [uploading, setUploading] = useState(false);
+  };
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+  // Convert image to base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+  // Submit form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setUploading(true);
+    if (!image) {
+      alert("Please upload an image");
+      return;
+    }
 
-        // We MUST use FormData for file uploads
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('name', form.name);
-        formData.append('price', Number(form.price)); // Ensure it's a number
-        formData.append('stock', Number(form.stock)); // Ensure it's a number
-        formData.append('category', form.category);
+    try {
+      setLoading(true);
 
-        try {
-            // Ensure the URL matches your Node server port (default 5000)
-            const response = await axios.post('http://localhost:5000/api/sarees', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+      // 1️⃣ Convert image
+      const base64Image = await convertToBase64(image);
 
-            console.log("Success:", response.data);
-            alert("Saree added successfully to Sarees Den!");
-            
-            // Reset form after success
-            setForm({ name: '', price: '', stock: '', category: 'Kanjeevaram Silk' });
-            setFile(null);
-            e.target.reset(); 
-        } catch (error) {
-            console.error("Error details:", error.response?.data || error.message);
-            alert("Failed to add saree. Check server logs.");
-        } finally {
-            setUploading(false);
-        }
-    };
+      // 2️⃣ Upload image to backend → Cloudinary
+      const uploadRes = await fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: base64Image }),
+      });
 
-    return (
-        <div style={{ maxWidth: '500px', margin: '50px auto', padding: '20px', border: '2px solid var(--gold)', background: 'white' }}>
-            <h2 style={{ color: 'var(--maroon)', textAlign: 'center' }}>Add New Silk Saree</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                
-                <input type="text" name="name" placeholder="Saree Name" onChange={handleChange} required 
-                    style={{ padding: '10px', border: '1px solid var(--gold)' }} />
-                
-                <select name="category" onChange={handleChange} style={{ padding: '10px', border: '1px solid var(--gold)' }}>
-                    <option value="Kanjeevaram Silk">Kanjeevaram Silk</option>
-                    <option value="Banarasi Silk">Banarasi Silk</option>
-                    <option value="Mysore Silk">Mysore Silk</option>
-                    <option value="Tussar Silk">Tussar Silk</option>
-                </select>
+      const uploadData = await uploadRes.json();
 
-                <input type="number" name="price" placeholder="Price (₹)" onChange={handleChange} required 
-                    style={{ padding: '10px', border: '1px solid var(--gold)' }} />
+      if (!uploadData.success) {
+        throw new Error("Image upload failed");
+      }
 
-                <input type="number" name="stock" placeholder="Initial Stock" onChange={handleChange} required 
-                    style={{ padding: '10px', border: '1px solid var(--gold)' }} />
+      // 3️⃣ Prepare saree data
+      const sareePayload = {
+        name: formData.name,
+        category: formData.category,
+        price: Number(formData.price),
+        stock: Number(formData.stock),
+        description: formData.description,
+        image: uploadData.imageUrl,
+        createdAt: serverTimestamp(),
+      };
 
-                <label style={{ fontWeight: 'bold' }}>Product Image:</label>
-                <input type="file" accept="image/*" onChange={handleFileChange} required />
+      // 4️⃣ Save to Firestore
+      await addDoc(collection(db, "sarees"), sareePayload);
 
-                <button type="submit" className="btn-primary" disabled={uploading}>
-                    {uploading ? 'Uploading to Cloudinary...' : 'Add Saree to Catalog'}
-                </button>
-            </form>
-        </div>
-    );
+      alert("Saree added successfully!");
+
+      // 5️⃣ Reset form
+      setFormData({
+        name: "",
+        category: "",
+        price: "",
+        stock: "",
+        description: "",
+      });
+      setImage(null);
+    } catch (error) {
+      console.error("ADD SAREE ERROR:", error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fffaf5] px-6 py-10">
+      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+
+        {/* Heading */}
+        <h2 className="text-3xl font-bold text-[#7b1e1e] mb-8 text-center">
+          Add New Saree
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* Saree Name */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Saree Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              placeholder="e.g. Kanjeevaram Silk Saree"
+              className="w-full border rounded-lg px-4 py-2"
+            />
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Category
+            </label>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+              className="w-full border rounded-lg px-4 py-2"
+            >
+              <option value="">Select category</option>
+              <option value="Kanjeevaram">Kanjeevaram</option>
+              <option value="Banarasi">Banarasi</option>
+              <option value="Chanderi">Chanderi</option>
+              <option value="Mysore Silk">Mysore Silk</option>
+            </select>
+          </div>
+
+          {/* Price & Stock */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Price (₹)
+              </label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                required
+                className="w-full border rounded-lg px-4 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Stock
+              </label>
+              <input
+                type="number"
+                name="stock"
+                value={formData.stock}
+                onChange={handleChange}
+                required
+                className="w-full border rounded-lg px-4 py-2"
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="4"
+              placeholder="Fabric, design, occasion, etc."
+              className="w-full border rounded-lg px-4 py-2"
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Saree Image
+            </label>
+
+            <div className="border-2 border-dashed rounded-xl p-6 text-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+                className="hidden"
+                id="imageUpload"
+              />
+              <label
+                htmlFor="imageUpload"
+                className="cursor-pointer text-[#7b1e1e] font-semibold"
+              >
+                Click to upload image
+              </label>
+
+              {image && (
+                <p className="mt-2 text-sm text-gray-600">
+                  Selected: {image.name}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#7b1e1e] text-white py-3 rounded-lg font-semibold hover:bg-[#5e1515] disabled:opacity-60"
+          >
+            {loading ? "Uploading..." : "Add Saree"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default AddSaree;
