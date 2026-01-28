@@ -2,20 +2,24 @@ import { useEffect, useState } from "react";
 import {
   collection,
   onSnapshot,
-  updateDoc,
-  doc,
-  orderBy,
   query,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useAuth } from "../../context/AuthContext";
 
-const Orders = () => {
+const UserOrders = () => {
+  const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) return;
+
     const q = query(
       collection(db, "orders"),
+      where("userId", "==", user.email),
       orderBy("date", "desc")
     );
 
@@ -29,49 +33,37 @@ const Orders = () => {
     });
 
     return () => unsubscribe();
-  }, []);
-
-  const updateStatus = async (orderId, newStatus) => {
-    try {
-      await updateDoc(doc(db, "orders", orderId), {
-        status: newStatus,
-      });
-      alert("Order status updated");
-    } catch (error) {
-      console.error("Status update error:", error);
-      alert("Failed to update status");
-    }
-  };
+  }, [user]);
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading orders...
+        Loading your orders...
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[#fffaf5] px-6 py-10">
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6">
+      <div className="max-w-5xl mx-auto">
 
         <h2 className="text-3xl font-bold text-[#7b1e1e] mb-8 text-center">
-          Customer Orders
+          My Orders
         </h2>
 
         {orders.length === 0 ? (
           <p className="text-center text-gray-500">
-            No orders yet.
+            You have not placed any orders yet.
           </p>
         ) : (
           <div className="space-y-6">
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="border rounded-xl p-5 shadow-sm"
+                className="bg-white rounded-xl shadow-md p-6"
               >
                 {/* Header */}
-                <div className="flex flex-wrap justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4">
                   <div>
                     <p className="font-semibold">
                       Order ID: {order.id}
@@ -94,13 +86,6 @@ const Orders = () => {
                   </span>
                 </div>
 
-                {/* Customer */}
-                <div className="mb-4 text-sm">
-                  <p><strong>Name:</strong> {order.customerName}</p>
-                  <p><strong>Phone:</strong> {order.customerPhone}</p>
-                  <p><strong>Address:</strong> {order.customerAddress}</p>
-                </div>
-
                 {/* Items */}
                 <div className="mb-4">
                   <p className="font-semibold mb-2">Items:</p>
@@ -114,36 +99,10 @@ const Orders = () => {
                   </ul>
                 </div>
 
-                {/* Footer */}
-                <div className="flex flex-wrap justify-between items-center">
-                  <p className="text-lg font-bold">
-                    Total: ₹{order.totalAmount}
-                  </p>
-
-                  <div className="flex gap-3">
-                    {order.status === "confirmed" && (
-                      <button
-                        onClick={() =>
-                          updateStatus(order.id, "shipped")
-                        }
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                      >
-                        Mark Shipped
-                      </button>
-                    )}
-
-                    {order.status === "shipped" && (
-                      <button
-                        onClick={() =>
-                          updateStatus(order.id, "delivered")
-                        }
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-                      >
-                        Mark Delivered
-                      </button>
-                    )}
-                  </div>
-                </div>
+                {/* Total */}
+                <p className="text-lg font-bold text-right">
+                  Total Paid: ₹{order.totalAmount}
+                </p>
               </div>
             ))}
           </div>
@@ -153,4 +112,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default UserOrders;

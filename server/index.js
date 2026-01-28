@@ -5,11 +5,15 @@ const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 const admin = require('firebase-admin');
+const uploadRoute = require("./routes/upload");
 
 const app = express();
 // const cors = require('cors'); // npm install cors
 app.use(cors());
 app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use("/api/upload", uploadRoute);
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // 1. ENSURE UPLOADS DIRECTORY EXISTS (Crucial for Multer)
 const uploadDir = './uploads';
