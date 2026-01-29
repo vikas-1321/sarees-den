@@ -3,26 +3,30 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-[#f5e6d3] pt-16 pb-8 font-serif">
+    /* 🟤 Dark Brown Background with a Metallic Gold top border */
+    <footer 
+      style={{ backgroundColor: '#ffd700 ' }} 
+      className="text-[#F7E7CE] py-16 font-serif mt-auto border-t-[3px] border-[#D4AF37]"
+    >
       <div className="max-w-7xl mx-auto px-6">
         
-        {/* Top Section: Branding, Links, and Newsletter */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
           
-          {/* Brand and Socials */}
-          <div className="md:col-span-1">
-            <h2 className="text-2xl font-bold text-[#7b1e1e] mb-4 tracking-tighter uppercase">
+          {/* 1. Brand Section: Pure Gold Heading */}
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-[#D4AF37] tracking-[0.2em] uppercase">
               SAREES DEN
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              Preserving the art of hand-woven elegance since 1995. Every weave tells a story of tradition and timeless beauty.
+            <p className="text-sm leading-relaxed opacity-90 text-[#F7E7CE]/80">
+              Preserving the art of hand-woven elegance since 1995. We bring the 
+              timeless gold-standard heritage of Indian looms to your wardrobe.
             </p>
-            <div className="flex gap-4 text-gray-500">
+            <div className="flex gap-6 pt-2">
               <a 
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="hover:text-[#7b1e1e] transition-colors text-sm"
+                className="text-[#D4AF37] hover:text-white transition-colors text-xs font-bold uppercase tracking-widest border-b border-[#D4AF37]/30 pb-1"
               >
                 Instagram
               </a>
@@ -30,71 +34,73 @@ const Footer = () => {
                 href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="hover:text-[#7b1e1e] transition-colors text-sm"
+                className="text-[#D4AF37] hover:text-white transition-colors text-xs font-bold uppercase tracking-widest border-b border-[#D4AF37]/30 pb-1"
               >
                 Facebook
               </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hover:text-[#7b1e1e] transition-colors text-sm"
-              >
-                Twitter
-              </a>
             </div>
           </div>
 
-          {/* Quick Links Navigation */}
-          <div className="grid grid-cols-2 gap-8 md:col-span-1">
+          {/* 2. Navigation: Champagne Links with Gold Hover */}
+          <div className="grid grid-cols-2 gap-8">
             <div>
-              <h4 className="font-bold uppercase text-xs tracking-widest mb-6">Shop</h4>
-              <ul className="space-y-4 text-sm text-gray-600">
-                <li><Link to="/" className="hover:text-[#7b1e1e]">All Collection</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Kanjeevaram</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Banarasi</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Best Sellers</Link></li>
+              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6 opacity-80">
+                Collections
+              </h4>
+              <ul className="space-y-4 text-sm font-medium">
+                <li><Link to="/shop-all" className="hover:text-white transition-colors">Kanjeevaram</Link></li>
+                <li><Link to="/shop-all" className="hover:text-white transition-colors">Banarasi Silk</Link></li>
+                <li><Link to="/shop-all" className="hover:text-white transition-colors">Zari Work</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold uppercase text-xs tracking-widest mb-6">Company</h4>
-              <ul className="space-y-4 text-sm text-gray-600">
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Our Story</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Shipping Policy</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">Contact Us</Link></li>
-                <li><Link to="/" className="hover:text-[#7b1e1e]">FAQs</Link></li>
+              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6 opacity-80">
+                Experience
+              </h4>
+              <ul className="space-y-4 text-sm font-medium">
+                <li><Link to="/" className="hover:text-white transition-colors">Our Story</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Shipping</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Care Guide</Link></li>
               </ul>
             </div>
           </div>
 
-          {/* Newsletter Subscription */}
-          <div className="md:col-span-1">
-            <h4 className="font-bold uppercase text-xs tracking-widest mb-6">Never Miss a Sale</h4>
-            <p className="text-sm text-gray-600 mb-6">
-              Get exclusive promotions and product updates by signing up for our newsletter.
+          {/* 3. Newsletter: Gold Underline & Champagne Join */}
+          <div className="space-y-6">
+            <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] opacity-80">
+              The Registry
+            </h4>
+            <p className="text-sm text-[#F7E7CE]/80">
+              Subscribe for exclusive access to gold-labeled drops and heritage stories.
             </p>
-            <form className="flex border-b border-black pb-2" onSubmit={(e) => e.preventDefault()}>
+            <form 
+              className="flex border-b border-[#D4AF37]/50 pb-2 focus-within:border-[#D4AF37] transition-colors"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <input 
                 type="email" 
-                placeholder="Enter your email" 
-                className="bg-transparent w-full outline-none text-sm font-sans"
+                placeholder="EMAIL ADDRESS" 
+                className="bg-transparent w-full outline-none text-xs tracking-widest text-[#F7E7CE] placeholder:text-[#F7E7CE]/40 font-sans"
                 required
               />
-              <button type="submit" className="text-sm font-bold uppercase tracking-widest hover:text-[#7b1e1e] transition-colors">
+              <button 
+                type="submit" 
+                className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#D4AF37] hover:text-white transition-all"
+              >
                 Join
               </button>
             </form>
           </div>
         </div>
 
-        {/* Bottom Section: Copyright and Legal */}
-        <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-400 uppercase tracking-widest">
-            © {new Date().getFullYear()} SAREES DEN. All Rights Reserved.
+        {/* 4. Bottom Section: Muted Gold */}
+        <div className="border-t border-[#D4AF37]/20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/50">
+            © 2026 SAREES DEN.
           </p>
-          <div className="flex gap-6 text-[10px] text-gray-400 uppercase tracking-widest">
-            <Link to="/" className="hover:text-black">Terms of Service</Link>
-            <Link to="/" className="hover:text-black">Privacy Policy</Link>
+          <div className="flex gap-8 text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/50">
+            <Link to="/" className="hover:text-white">Privacy</Link>
+            <Link to="/" className="hover:text-white">Terms</Link>
           </div>
         </div>
       </div>

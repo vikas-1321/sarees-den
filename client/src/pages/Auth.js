@@ -11,132 +11,170 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login, register } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
+    // Validation for Registration
     if (!isLogin && password !== confirmPassword) {
       setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
-    const payload = { email, role, fullName };
-
-    if (isLogin) {
-      login(payload);
-    } else {
-      register(payload);
+    try {
+      if (isLogin) {
+        // Firebase Login Logic
+        await login(email, password);
+      } else {
+        // Firebase Registration Logic with Firestore Role Storage
+        await register(email, password, role, fullName);
+      }
+      navigate("/");
+    } catch (err) {
+      console.error("AUTH_ERROR:", err.code);
+      
+      // Map Firebase error codes to user-friendly messages
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("No account found with this email.");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect password. Please try again.");
+          break;
+        case "auth/email-already-in-use":
+          setError("This email is already registered.");
+          break;
+        case "auth/weak-password":
+          setError("Password should be at least 6 characters.");
+          break;
+        case "auth/invalid-email":
+          setError("Please enter a valid email address.");
+          break;
+        default:
+          setError("An error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    navigate("/");
   };
 
   return (
-    <div className="min-h-screen bg-[#fffaf5] flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen bg-[#fffaf5] flex items-center justify-center px-4 font-serif">
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 border border-[#f5e6d3]">
 
         {/* Heading */}
-        <h2 className="text-3xl font-bold text-center text-[#7b1e1e] mb-6">
-          {isLogin ? "Login" : "Create Account"}
+        <h2 className="text-3xl font-light text-center text-[#7b1e1e] mb-8 uppercase tracking-widest">
+          {isLogin ? "Welcome Back" : "Join the Heritage"}
         </h2>
 
-        {/* Toggle */}
-        <div className="flex mb-6 rounded-lg overflow-hidden border">
+        {/* Login/Register Toggle */}
+        <div className="flex mb-8 rounded-sm overflow-hidden border border-gray-200 p-1">
           <button
-            onClick={() => setIsLogin(true)}
-            className={`flex-1 py-2 ${
-              isLogin ? "bg-[#7b1e1e] text-white" : "bg-white"
+            onClick={() => { setIsLogin(true); setError(""); }}
+            className={`flex-1 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
+              isLogin ? "bg-[#7b1e1e] text-white" : "bg-white text-gray-500 hover:text-[#7b1e1e]"
             }`}
           >
             Login
           </button>
           <button
-            onClick={() => setIsLogin(false)}
-            className={`flex-1 py-2 ${
-              !isLogin ? "bg-[#7b1e1e] text-white" : "bg-white"
+            onClick={() => { setIsLogin(false); setError(""); }}
+            className={`flex-1 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
+              !isLogin ? "bg-[#7b1e1e] text-white" : "bg-white text-gray-500 hover:text-[#7b1e1e]"
             }`}
           >
             Register
           </button>
         </div>
 
-        {/* Role */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Account Type</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
-          >
-            <option value="user">Customer</option>
-            <option value="admin">Seller</option>
-          </select>
-        </div>
-
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          
+          {/* Role Selection (Only visible during Registration) */}
+          {!isLogin && (
+            <div className="animate-fadeIn">
+              <label className="block text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">
+                Account Type
+              </label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full border-b border-gray-300 focus:border-[#7b1e1e] outline-none px-0 py-2 text-sm transition-colors"
+              >
+                <option value="user">Customer</option>
+                <option value="admin">Seller (Admin)</option>
+              </select>
+            </div>
+          )}
 
           {!isLogin && (
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="FULL NAME"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border-b border-gray-300 focus:border-[#7b1e1e] outline-none px-0 py-2 text-sm placeholder:text-gray-300"
             />
           )}
 
           <input
             type="email"
-            placeholder="Email address"
+            placeholder="EMAIL ADDRESS"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border-b border-gray-300 focus:border-[#7b1e1e] outline-none px-0 py-2 text-sm placeholder:text-gray-300"
           />
 
           <input
             type="password"
-            placeholder="Password"
+            placeholder="PASSWORD"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border-b border-gray-300 focus:border-[#7b1e1e] outline-none px-0 py-2 text-sm placeholder:text-gray-300"
           />
 
           {!isLogin && (
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder="CONFIRM PASSWORD"
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border-b border-gray-300 focus:border-[#7b1e1e] outline-none px-0 py-2 text-sm placeholder:text-gray-300"
             />
           )}
 
           {error && (
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-xs text-red-600 bg-red-50 p-2 text-center italic">{error}</p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-[#7b1e1e] text-white py-3 rounded-lg font-semibold hover:bg-[#5e1515]"
+            disabled={loading}
+            className="w-full bg-[#7b1e1e] text-white py-4 rounded-sm font-bold uppercase tracking-[0.2em] text-xs hover:bg-black transition-all disabled:opacity-50 mt-4 shadow-md"
           >
-            {isLogin ? "Login" : "Register"}
+            {loading ? "AUTHENTICATING..." : isLogin ? "LOG IN" : "CREATE ACCOUNT"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
-          {isLogin
-            ? "New here? Switch to Register"
-            : "Already have an account? Switch to Login"}
-        </p>
+        <div className="text-center mt-8">
+            <button 
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-[10px] text-gray-400 uppercase tracking-widest hover:text-[#7b1e1e] transition-colors"
+            >
+                {isLogin ? "Need an account? Sign Up" : "Already have an account? Log In"}
+            </button>
+        </div>
       </div>
     </div>
   );
