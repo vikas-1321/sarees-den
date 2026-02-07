@@ -21,7 +21,9 @@ if (!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir);
 }
 
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 // 2. CLOUDINARY CONFIG (Double check these names!)
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
