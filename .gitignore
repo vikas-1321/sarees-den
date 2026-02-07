@@ -3,3 +3,4 @@ server\node_modules
 serviceAccountKey.json
 client\.env
 .vercel
+server\serviceAccountKey.json
