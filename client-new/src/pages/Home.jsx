@@ -67,7 +67,7 @@ const Home = () => {
           {/* Two Small Boxes */}
           <div className="md:col-span-1 flex flex-col gap-6">
             <div className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
-              <img src="https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
+              <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Festive Glow</span>
               </div>
