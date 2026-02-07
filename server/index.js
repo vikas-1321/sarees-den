@@ -21,11 +21,12 @@ if (!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir);
 }
 
+require('dotenv').config();
 // 2. CLOUDINARY CONFIG (Double check these names!)
 cloudinary.config({
-  cloud_name: 'deomtojnu',
-  api_key: '379171439284215',
-  api_secret: 'HpAqb0tFeWfi4RmAgiOIt6BW3kg'
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // 3. FIREBASE ADMIN CONFIG
