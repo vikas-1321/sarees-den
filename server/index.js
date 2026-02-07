@@ -46,39 +46,69 @@ const upload = multer({ storage: storage });
 
 // 5. THE ADD SAREE ROUTE
 app.post('/api/sarees', upload.single('image'), async (req, res) => {
-    console.log("--- New Upload Attempt ---");
     try {
         if (!req.file) throw new Error("No file uploaded");
 
-        // Upload to Cloudinary
-        console.log("Uploading to Cloudinary...");
+        // 1. Upload to Cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, { folder: 'sarees_den' });
         
-        // Remove file from local server after Cloudinary upload
+        // 2. Cleanup local file
         fs.unlinkSync(req.file.path);
 
-        // Save to Firestore
-        console.log("Saving to Firestore...");
+        // 3. Save to Firestore with the new Tags
         const sareeData = {
             name: req.body.name,
             price: Number(req.body.price),
             stock: Number(req.body.stock),
             category: req.body.category,
+            description: req.body.description, // Added description
+            color: req.body.color,             // Added tag
+            occasion: req.body.occasion,       // Added tag
+            isTrending: req.body.isTrending === 'true', // Handle boolean from FormData
             image: result.secure_url,
             createdAt: new Date()
         };
 
         const docRef = await db.collection('sarees').add(sareeData);
-        console.log("Success! ID:", docRef.id);
-
         res.status(200).json({ id: docRef.id, ...sareeData });
 
     } catch (error) {
-        console.error("SERVER ERROR:", error.message);
         res.status(500).json({ error: error.message });
     }
 });
 
+// 1. GET A SINGLE SAREE BY ID
+app.get('/api/sarees/:id', async (req, res) => {
+    try {
+        const doc = await db.collection('sarees').doc(req.params.id).get();
+        if (!doc.exists) {
+            return res.status(404).json({ error: "Saree not found" });
+        }
+        res.json({ id: doc.id, ...doc.data() });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 2. UPDATE SAREE BY ID
+app.put('/api/sarees/:id', async (req, res) => {
+    try {
+        const { id, ...updateData } = req.body; // Remove ID from body if it exists
+        
+        // Ensure numbers are handled correctly
+        if(updateData.price) updateData.price = Number(updateData.price);
+        if(updateData.stock) updateData.stock = Number(updateData.stock);
+
+        await db.collection('sarees').doc(req.params.id).update({
+            ...updateData,
+            updatedAt: new Date()
+        });
+
+        res.status(200).json({ message: "Update successful" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 app.get('/api/users/:uid', async (req, res) => {
     try {

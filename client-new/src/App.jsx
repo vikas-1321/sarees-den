@@ -21,6 +21,7 @@ import Checkout from "./pages/Checkout";
 import AddSaree from "./components/Admin/AddSaree";
 import ManageProducts from "./components/Admin/ManageProducts";
 import Orders from "./components/Admin/Orders";
+import EditSaree from "./components/Admin/EditSaree";
 
 // Context
 import { useAuth } from "./context/AuthContext";
@@ -67,7 +68,10 @@ function App() {
                   <AddSaree />
                 </AdminRoute>
               }
+              
             />
+            <Route path="/admin/add" element={<AddSaree />} />
+            <Route path="/admin/edit/:id" element={<EditSaree />} />
             <Route
               path="/admin/manage"
               element={

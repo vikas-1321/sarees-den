@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
+import { useNavigate } from "react-router-dom";
 import { collection, onSnapshot, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const ManageProducts = () => {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -101,10 +103,10 @@ const ManageProducts = () => {
                                     {/* Actions */}
                                     <td className="px-6 py-4 text-right space-x-2">
                                         <button 
-                                            onClick={() => handleUpdateStock(p.id, p.stock)} 
+                                            onClick={() => navigate(`/admin/edit/${p.id}`)} 
                                             className="text-[10px] uppercase tracking-widest font-bold px-4 py-2 border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white transition-all"
                                         >
-                                            Update Stock
+                                            Edit Saree
                                         </button>
                                         <button 
                                             onClick={() => handleDelete(p.id)} 

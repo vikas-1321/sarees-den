@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth, db } from "../firebase"; // Ensure db is exported from your firebase.js
+import { auth, db } from "../firebase";
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
@@ -19,12 +19,11 @@ export const AuthProvider = ({ children }) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
-    // Save additional info (role, name) to Firestore
     await setDoc(doc(db, "users", firebaseUser.uid), {
       uid: firebaseUser.uid,
       fullName,
       email,
-      role,
+      role, // "admin" or "user"
       createdAt: new Date(),
     });
 
@@ -32,8 +31,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   // 2. Login Logic
-  const login = async (email, password) => {
-    return await signInWithEmailAndPassword(auth, email, password);
+  const login = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   // 3. Logout Logic
@@ -41,13 +40,13 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  // 4. Persistence: Keep user logged in on refresh
+  // 4. Role Persistence
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Fetch role from Firestore
         const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
         if (userDoc.exists()) {
+          // Combine Firebase Auth data with Firestore role/name
           setUser({ ...firebaseUser, ...userDoc.data() });
         } else {
           setUser(firebaseUser);
@@ -61,8 +60,11 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  // Helper boolean for the Navbar and Protected Routes
+  const isAdmin = user?.role === "admin";
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isAdmin }}>
       {!loading && children}
     </AuthContext.Provider>
   );
