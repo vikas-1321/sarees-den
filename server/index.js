@@ -63,15 +63,22 @@ const upload = multer({ storage: storage });
 // 5. THE ADD SAREE ROUTE
 app.post('/api/sarees', upload.single('image'), async (req, res) => {
     try {
-        if (!req.file) throw new Error("No file uploaded");
+        console.log("--- New Upload Request Received ---");
+        if (!req.file) {
+            console.error("DEBUG: No file found in req.file");
+            throw new Error("No file uploaded");
+        }
 
         // 1. Upload to Cloudinary
+        console.log("DEBUG: Attempting Cloudinary Upload...");
         const result = await cloudinary.uploader.upload(req.file.path, { folder: 'sarees_den' });
+        console.log("DEBUG: Cloudinary Success:", result.secure_url);
         
         // 2. Cleanup local file
         fs.unlinkSync(req.file.path);
 
         // 3. Save to Firestore with the new Tags
+        console.log("DEBUG: Attempting Firestore Save...");
         const sareeData = {
             name: req.body.name,
             price: Number(req.body.price),
@@ -85,11 +92,14 @@ app.post('/api/sarees', upload.single('image'), async (req, res) => {
             createdAt: new Date()
         };
 
-        const docRef = await db.collection('sarees').add(sareeData);
+      const docRef = await db.collection('sarees').add(sareeData);
+        console.log("DEBUG: Firestore Success, ID:", docRef.id);
         res.status(200).json({ id: docRef.id, ...sareeData });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("!!! SERVER CRASH ERROR !!!:", error.message);
+        console.error("STACK TRACE:", error.stack); // This is key!
+        res.status(500).json({ error: error.message, stack: error.stack });
     }
 });
 
