@@ -36,7 +36,7 @@ const AddSaree = () => {
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
       data.append("image", image); // Key matches upload.single('image')
 
-      const response = await fetch("http://localhost:5000/api/sarees", {
+      const response = await fetch("https://sarees-den-backend.onrender.com/api/sarees", {
         method: "POST",
         body: data,
       });
