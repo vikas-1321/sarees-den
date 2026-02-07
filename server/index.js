@@ -34,7 +34,10 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) 
+  : require("./serviceAccountKey.json");
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
