@@ -28,7 +28,10 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
+const PORT = process.env.PORT || 5000; 
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
 const serviceAccount = require("./serviceAccountKey.json");
