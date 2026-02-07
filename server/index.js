@@ -36,9 +36,16 @@ cloudinary.config({
 
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
-  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) 
-  : require("./serviceAccountKey.json");
+const serviceAccountValue = process.env.FIREBASE_SERVICE_ACCOUNT;
+
+if (!serviceAccountValue) {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT is missing from Environment Variables");
+}
+
+const serviceAccount = JSON.parse(serviceAccountValue);
+
+// FIX: This line fixes the common 'escaped newline' bug on cloud platforms
+serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
