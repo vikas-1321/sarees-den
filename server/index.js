@@ -36,21 +36,27 @@ cloudinary.config({
 
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
-const serviceAccountValue = process.env.FIREBASE_SERVICE_ACCOUNT;
+const serviceAccountVar = process.env.FIREBASE_SERVICE_ACCOUNT;
 
-if (!serviceAccountValue) {
-    throw new Error("FIREBASE_SERVICE_ACCOUNT is missing from Environment Variables");
+if (serviceAccountVar) {
+  try {
+    const serviceAccount = JSON.parse(serviceAccountVar);
+    
+    // This is the CRITICAL fix for the UNAUTHENTICATED error
+    serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+      console.log("DEBUG: Firebase Admin Initialized Successfully");
+    }
+  } catch (err) {
+    console.error("DEBUG: Failed to parse FIREBASE_SERVICE_ACCOUNT JSON", err.message);
+  }
 }
-
-const serviceAccount = JSON.parse(serviceAccountValue);
-
-// FIX: This line fixes the common 'escaped newline' bug on cloud platforms
-serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
 const db = admin.firestore();
+
 
 // 4. MULTER CONFIG
 const storage = multer.diskStorage({
