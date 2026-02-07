@@ -161,4 +161,8 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Saree Den API is live and running!');
+});
+
 app.listen(5000, () => console.log('Server running on http://localhost:5000'));
