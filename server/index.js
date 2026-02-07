@@ -10,9 +10,7 @@ const uploadRoute = require("./routes/upload");
 const app = express();
 // const cors = require('cors'); // npm install cors
 app.use(cors());
-app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
-app.use("/api/upload", uploadRoute);
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // 1. ENSURE UPLOADS DIRECTORY EXISTS (Crucial for Multer)
@@ -24,16 +22,18 @@ if (!fs.existsSync(uploadDir)){
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
+
+const PORT = process.env.PORT || 10000; 
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 // 2. CLOUDINARY CONFIG (Double check these names!)
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-const PORT = process.env.PORT || 10000; 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
 // 3. FIREBASE ADMIN CONFIG
 // Ensure serviceAccountKey.json is in the root of the server folder!
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
@@ -167,4 +167,3 @@ app.get('/', (req, res) => {
   res.send('Saree Den API is live and running!');
 });
 
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
