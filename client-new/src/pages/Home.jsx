@@ -7,7 +7,15 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [sarees, setSarees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeColor, setActiveColor] = useState("Gold"); // Added state for color filter
   const navigate = useNavigate();
+
+  const colorOptions = [
+    { name: "Gold", hex: "#D4AF37", label: "Antique Gold" },
+    { name: "Red", hex: "#7B1E1E", label: "Royal Red" },
+    { name: "Pastel", hex: "#FADADD", label: "Soft Pastel" },
+    { name: "Emerald", hex: "#50C878", label: "Emerald Green" }
+  ];
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "sarees"), (snapshot) => {
@@ -20,6 +28,11 @@ const Home = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  // Filter sarees based on the active selection
+  const filteredByColor = sarees.filter(
+    (s) => s.color === activeColor
+  );
 
   return (
     <div className="bg-white min-h-screen font-serif text-[#1a1a1a]">
@@ -56,32 +69,29 @@ const Home = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-auto md:h-[700px]">
-          {/* Main Large Box */}
-          <div className="md:col-span-2 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
-            <img src="https://images.unsplash.com/photo-1621112904887-419379ce6824?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bridal" />
+          <div onClick={() => navigate("/category/Wedding")} className="md:col-span-2 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
+            <img src="https://th.bing.com/th/id/OIP.yEtSqsNcLEYEnLaFDEtKAQAAAA?w=193&h=323&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bridal" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all flex items-end p-10">
               <span className="text-white text-2xl tracking-[0.2em] uppercase border-b border-white pb-2">Bridal Couture</span>
             </div>
           </div>
           
-          {/* Two Small Boxes */}
           <div className="md:col-span-1 flex flex-col gap-6">
-            <div className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
+            <div onClick={() => navigate("/category/Festive")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
               <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Festive Glow</span>
               </div>
             </div>
-            <div className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
+            <div onClick={() => navigate("/category/Party")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
               <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Daily" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                <span className="text-white text-sm tracking-[0.3em] uppercase">Daily Drape</span>
+                <span className="text-white text-sm tracking-[0.3em] uppercase">Evening Party</span>
               </div>
             </div>
           </div>
 
-          {/* Tall Box */}
-          <div className="md:col-span-1 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
+          <div onClick={() => navigate("/category/Reception")} className="md:col-span-1 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
             <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Party" />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <span className="text-white text-sm tracking-[0.3em] uppercase rotate-90 whitespace-nowrap">Reception Wear</span>
@@ -90,7 +100,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3. TRENDING NOW (6-ITEM GRID) */}
+      {/* 3. TRENDING NOW */}
       <section className="bg-[#fcfbf9] py-24 px-6 border-y border-[#f5e6d3]">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16 px-4">
@@ -98,9 +108,7 @@ const Home = () => {
               <span className="text-[10px] uppercase tracking-[0.5em] text-gray-400 mb-2 block">The Current Favorites</span>
               <h2 className="text-4xl font-light italic text-[#7b1e1e]">Trending Now</h2>
             </div>
-            <button onClick={() => navigate("/shop-all")} className="text-xs uppercase font-bold tracking-widest border-b border-black pb-1 hover:text-[#7b1e1e] hover:border-[#7b1e1e] transition-all">
-              View All
-            </button>
+            <button onClick={() => navigate("/shop-all")} className="text-xs uppercase font-bold tracking-widest border-b border-black pb-1 hover:text-[#7b1e1e] transition-all">View All</button>
           </div>
 
           {loading ? (
@@ -112,6 +120,52 @@ const Home = () => {
                   <SareeCard saree={saree} />
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 4. COLOR FILTER SECTION */}
+      <section className="py-24 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+          <div className="text-center md:text-left">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-gray-400 mb-2 block">Premium Palettes</span>
+            <h2 className="text-4xl font-light italic text-[#7b1e1e]">Shop by Color</h2>
+          </div>
+
+          <div className="flex items-center gap-6 bg-[#fcfbf9] px-8 py-4 rounded-full border border-[#f5e6d3] shadow-sm">
+            {colorOptions.map((color) => (
+              <button
+                key={color.name}
+                onClick={() => setActiveColor(color.name)}
+                className="group flex flex-col items-center gap-2 outline-none"
+              >
+                <div 
+                  style={{ backgroundColor: color.hex }}
+                  className={`w-8 h-8 rounded-full border-2 transition-all duration-300 transform ${
+                    activeColor === color.name ? 'border-[#7b1e1e] scale-125' : 'border-transparent opacity-50 hover:opacity-80'
+                  }`}
+                />
+                <span className={`text-[8px] uppercase tracking-widest transition-all duration-300 ${
+                  activeColor === color.name ? 'opacity-100 font-bold translate-y-0' : 'opacity-0 -translate-y-1'
+                }`}>
+                  {color.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto pb-10 scrollbar-hide snap-x snap-mandatory md:grid md:grid-cols-4 md:overflow-visible">
+          {filteredByColor.length > 0 ? (
+            filteredByColor.map((saree) => (
+              <div key={saree.id} className="min-w-[280px] md:min-w-full snap-start animate-fadeIn">
+                <SareeCard saree={saree} />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-4 py-24 text-center w-full border border-dashed border-[#f5e6d3] rounded-sm">
+              <p className="text-gray-400 italic tracking-widest text-sm">No {activeColor} pieces currently in the gallery.</p>
             </div>
           )}
         </div>

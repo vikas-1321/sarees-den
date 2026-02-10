@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import ShopAll from "./pages/ShopAll";
+import CategoryPage from './pages/CategoryPage';
 
 // Common
 import Navbar from "./components/common/Navbar";
@@ -31,17 +32,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* 1. This wrapper ensures the footer sticks to the bottom */}
       <div className="flex flex-col min-h-screen">
-        
         <Navbar />
 
-        {/* 2. Main content area wraps the Routes */}
         <main className="flex-grow">
           <Routes>
             {/* Public */}
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/shop-all" element={<ShopAll />} />
+
+            {/* ADD THIS ROUTE - This is what was missing! */}
+            <Route path="/category/:categoryName" element={<CategoryPage />} />
 
             {/* Customer protected */}
             <Route
@@ -52,9 +54,7 @@ function App() {
               path="/wishlist"
               element={user ? <Wishlist /> : <Navigate to="/auth" />}
             />
-
             <Route path="/Checkout" element={<Checkout />} />
-
             <Route
               path="/my-orders"
               element={user ? <UserOrders /> : <Navigate to="/auth" />}
@@ -63,42 +63,25 @@ function App() {
             {/* Seller protected */}
             <Route
               path="/admin"
-              element={
-                <AdminRoute>
-                  <AddSaree />
-                </AdminRoute>
-              }
-              
+              element={<AdminRoute><AddSaree /></AdminRoute>}
             />
-            <Route path="/admin/add" element={<AddSaree />} />
-            <Route path="/admin/edit/:id" element={<EditSaree />} />
+            <Route path="/admin/add" element={<AdminRoute><AddSaree /></AdminRoute>} />
+            <Route path="/admin/edit/:id" element={<AdminRoute><EditSaree /></AdminRoute>} />
             <Route
               path="/admin/manage"
-              element={
-                <AdminRoute>
-                  <ManageProducts />
-                </AdminRoute>
-              }
+              element={<AdminRoute><ManageProducts /></AdminRoute>}
             />
             <Route
               path="/admin/orders"
-              element={
-                <AdminRoute>
-                  <Orders />
-                </AdminRoute>
-              }
+              element={<AdminRoute><Orders /></AdminRoute>}
             />
 
-            {/* Fallback */}
+            {/* Fallback - MUST be the last route in the list */}
             <Route path="*" element={<Navigate to="/" />} />
-
-            <Route path="/shop-all" element={<ShopAll />} />
           </Routes>
         </main>
 
-        {/* 3. Footer placed here will appear on all pages */}
         <Footer />
-
       </div>
     </BrowserRouter>
   );

@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     /* 🟤 Dark Brown Background with a Metallic Gold top border */
     <footer 
-      style={{ backgroundColor: '#ffd700 ' }} 
+      style={{ backgroundColor: 'rgb(14 87 89); ' }} 
       className="text-[#F7E7CE] py-16 font-serif mt-auto border-t-[3px] border-[#D4AF37]"
     >
       <div className="max-w-7xl mx-auto px-6">

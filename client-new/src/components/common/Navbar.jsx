@@ -51,9 +51,18 @@ const Navbar = () => {
       <div className="max-w-[1600px] mx-auto px-6 h-20 flex justify-between items-center">
         {/* Navigation Links */}
         <nav className="hidden lg:flex gap-8 text-[11px] uppercase tracking-[0.3em] font-semibold text-gray-700">
-          <Link to="/category/sarees" className="hover:text-[#7b1e1e] transition">Sarees</Link>
-          <Link to="/category/bridal" className="hover:text-[#7b1e1e] transition">Bridal</Link>
-          <Link to="/category/lehenga" className="hover:text-[#7b1e1e] transition">Lehenga</Link>
+          {/* Updated Navbar Links */}
+          <Link to="/shop-all" className="hover:text-[#7b1e1e] transition">
+            All Sarees
+          </Link>
+
+          <Link to="/category/Wedding" className="hover:text-[#7b1e1e] transition">
+            Wedding
+          </Link>
+
+          <Link to="/category/Reception" className="hover:text-[#7b1e1e] transition">
+            Reception
+          </Link>
 
           {/* Admin Tools Dropdown - Only visible to Admins */}
           {isAdmin && (
