@@ -5,11 +5,13 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import ShopAll from "./pages/ShopAll";
 import CategoryPage from './pages/CategoryPage';
+import SearchPage from "./pages/SearchPage";
 
 // Common
 import Navbar from "./components/common/Navbar";
 import AdminRoute from "./components/common/AdminRoute";
 import Footer from './components/common/Footer';
+import ScrollToTop from "./components/common/ScrollToTop";
 
 // User
 import Cart from "./pages/Cart";
@@ -32,6 +34,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <div className="flex flex-col min-h-screen">
         <Navbar />
 
@@ -44,6 +47,7 @@ function App() {
 
             {/* ADD THIS ROUTE - This is what was missing! */}
             <Route path="/category/:categoryName" element={<CategoryPage />} />
+            <Route path="/search" element={<SearchPage />} />
 
             {/* Customer protected */}
             <Route

@@ -70,7 +70,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-auto md:h-[700px]">
           <div onClick={() => navigate("/category/Wedding")} className="md:col-span-2 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
-            <img src="https://th.bing.com/th/id/OIP.yEtSqsNcLEYEnLaFDEtKAQAAAA?w=193&h=323&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bridal" />
+            <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770639199/sarees_den/gkeszx6m7vbdm6rxtyye.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bridal" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all flex items-end p-10">
               <span className="text-white text-2xl tracking-[0.2em] uppercase border-b border-white pb-2">Bridal Couture</span>
             </div>
@@ -78,13 +78,13 @@ const Home = () => {
           
           <div className="md:col-span-1 flex flex-col gap-6">
             <div onClick={() => navigate("/category/Festive")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
-              <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
+              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770650227/sarees_den/g3gx9wqu9wm7ri9qvh0l.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Festive Glow</span>
               </div>
             </div>
             <div onClick={() => navigate("/category/Party")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
-              <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Daily" />
+              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770639847/sarees_den/hd1zzkzewa2ho03ht8rv.webp" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Daily" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Evening Party</span>
               </div>
@@ -92,7 +92,7 @@ const Home = () => {
           </div>
 
           <div onClick={() => navigate("/category/Reception")} className="md:col-span-1 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Party" />
+            <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770648227/sarees_den/u3whiw6uzxrx8g6w5jqy.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Party" />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <span className="text-white text-sm tracking-[0.3em] uppercase rotate-90 whitespace-nowrap">Reception Wear</span>
             </div>
