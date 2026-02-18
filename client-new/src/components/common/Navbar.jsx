@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 font-serif">
+    <header className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 font-serif ">
       {/* Search Modal Overlay */}
       {isSearchOpen && (
         <div className="absolute inset-0 bg-white z-[60] flex items-center px-10 animate-in fade-in slide-in-from-top duration-300">
@@ -98,11 +98,27 @@ const Navbar = () => {
 
           {user ? (
             <div className="flex items-center gap-4 border-l pl-4 border-gray-200">
-              <Link to="/profile"><User className="w-5 h-5 hover:text-[#7b1e1e]" /></Link>
-              <button onClick={handleLogout} className="hover:text-[#7b1e1e] transition">
-                <LogOut className="w-5 h-5" />
+
+  {/* Profile Icon */}
+              <button
+                onClick={() => navigate(user ? "/profile" : "/auth")}
+                className="hover:text-[#c9a24d] transition cursor-pointer"
+              >
+                <User className="w-5 h-5" />
               </button>
+
+              {/* Logout Icon (only if logged in) */}
+              {user && (
+                <button
+                  onClick={logout}
+                  className="hover:text-red-600 transition cursor-pointer"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              )}
+
             </div>
+
           ) : (
             <Link to="/auth" className="text-[11px] uppercase tracking-widest font-semibold hover:text-[#7b1e1e]">Login</Link>
           )}

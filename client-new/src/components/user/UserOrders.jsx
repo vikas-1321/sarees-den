@@ -15,11 +15,11 @@ const UserOrders = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user?.email) return;
+    if (!user?.uid) return;
 
     const q = query(
       collection(db, "orders"),
-      where("userId", "==", user.email),
+      where("customerId", "==", user.uid),   // ✅ FIXED
       orderBy("date", "desc")
     );
 
@@ -33,7 +33,7 @@ const UserOrders = () => {
     });
 
     return () => unsubscribe();
-  }, [user?.email]);
+  }, [user?.uid]);
 
   if (loading) return <div className="p-20 text-center font-serif">Loading Orders...</div>;
 
@@ -62,7 +62,6 @@ const UserOrders = () => {
                 {orders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                     
-                    {/* 🖼️ PASSPORT SIZE IMAGE COLUMN */}
                     <td className="px-6 py-6">
                       <div className="flex gap-2 flex-wrap">
                         {order.cart.map((item, idx) => (
@@ -70,11 +69,9 @@ const UserOrders = () => {
                             <img
                               src={item.image}
                               alt={item.name}
-                              /* Standard Passport Size Ratio: 3.5cm x 4.5cm */
                               style={{ width: '35px', height: '45px' }}
                               className="object-cover"
                             />
-                            {/* Simple hover label */}
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                                 <span className="text-[8px] text-white font-bold">x{item.quantity}</span>
                             </div>
@@ -83,15 +80,15 @@ const UserOrders = () => {
                       </div>
                     </td>
 
-                    {/* 📝 Order Info */}
                     <td className="px-6 py-6">
-                      <p className="text-xs font-bold text-gray-800 tracking-wider">#{order.id.slice(0, 8).toUpperCase()}</p>
+                      <p className="text-xs font-bold text-gray-800 tracking-wider">
+                        #{order.id.slice(0, 8).toUpperCase()}
+                      </p>
                       <p className="text-[10px] text-gray-400 mt-1">
                         {order.date ? order.date.toDate().toLocaleDateString('en-GB') : "Pending"}
                       </p>
                     </td>
 
-                    {/* 🏷️ Status Badge */}
                     <td className="px-6 py-6">
                       <span className={`text-[9px] uppercase font-bold tracking-widest px-3 py-1 rounded-sm border ${
                         order.status === 'confirmed' ? 'border-yellow-200 text-yellow-700 bg-yellow-50' : 
@@ -102,11 +99,11 @@ const UserOrders = () => {
                       </span>
                     </td>
 
-                    {/* 💰 Price */}
                     <td className="px-6 py-6 text-right">
                       <p className="text-sm font-bold text-[#7b1e1e]">₹{order.totalAmount}</p>
                       <p className="text-[9px] text-gray-400 tracking-tighter uppercase">Via Secure Pay</p>
                     </td>
+
                   </tr>
                 ))}
               </tbody>

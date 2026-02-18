@@ -5,6 +5,9 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import ShopAll from "./pages/ShopAll";
 import CategoryPage from './pages/CategoryPage';
+import Profile from "./pages/Profile";
+import OrderSuccess from "./pages/OrderSuccess";
+
 
 // Common
 import Navbar from "./components/common/Navbar";
@@ -60,6 +63,8 @@ function App() {
               element={user ? <UserOrders /> : <Navigate to="/auth" />}
             />
 
+            <Route path="/order-success" element={<OrderSuccess />} />
+
             {/* Seller protected */}
             <Route
               path="/admin"
@@ -74,6 +79,11 @@ function App() {
             <Route
               path="/admin/orders"
               element={<AdminRoute><Orders /></AdminRoute>}
+            />
+
+            <Route
+              path="/profile"
+              element={user ? <Profile /> : <Navigate to="/auth" />}
             />
 
             {/* Fallback - MUST be the last route in the list */}
