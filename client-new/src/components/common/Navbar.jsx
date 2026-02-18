@@ -13,8 +13,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // Trending/Suggested terms to help users find products faster
-  const SUGGESTIONS = ["Bridal", "Wedding", "Banarasi", "Silk", "Gold", "Reception"];
-
+  const SUGGESTIONS = ["Wedding", "Reception", "Festive", "Party", "Banarasi", "Silk"];
+  
   // Reusable active link styling logic for NavLink components
   const activeLinkStyle = ({ isActive }) => 
     `transition-all duration-300 pb-1 ${

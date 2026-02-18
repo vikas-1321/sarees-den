@@ -15,8 +15,9 @@ const SearchPage = () => {
     // Fetch all sarees and filter client-side for better text matching
     const unsubscribe = onSnapshot(collection(db, "sarees"), (snapshot) => {
       const allSarees = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
+      const isBridalSearch = searchQuery === 'bridal' && saree.occasion?.toLowerCase() === 'wedding';
       const filtered = allSarees.filter(saree => 
+        isBridalSearch ||
         saree.name?.toLowerCase().includes(searchQuery) ||
         saree.description?.toLowerCase().includes(searchQuery) ||
         saree.occasion?.toLowerCase().includes(searchQuery) ||
