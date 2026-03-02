@@ -78,13 +78,13 @@ const Home = () => {
           
           <div className="md:col-span-1 flex flex-col gap-6">
             <div onClick={() => navigate("/category/Festive")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
-              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770650227/sarees_den/g3gx9wqu9wm7ri9qvh0l.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
+              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770639847/sarees_den/hd1zzkzewa2ho03ht8rv.webp" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Festive" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Festive Glow</span>
               </div>
             </div>
             <div onClick={() => navigate("/category/Party")} className="flex-1 relative group overflow-hidden cursor-pointer h-[300px]">
-              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770639847/sarees_den/hd1zzkzewa2ho03ht8rv.webp" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Daily" />
+              <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1772441802/sarees_den/txwuig5ynd2od0r0nroe.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Daily" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                 <span className="text-white text-sm tracking-[0.3em] uppercase">Evening Party</span>
               </div>
@@ -92,7 +92,7 @@ const Home = () => {
           </div>
 
           <div onClick={() => navigate("/category/Reception")} className="md:col-span-1 relative group overflow-hidden cursor-pointer h-[400px] md:h-full">
-            <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770648227/sarees_den/u3whiw6uzxrx8g6w5jqy.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Party" />
+            <img src="https://res.cloudinary.com/deomtojnu/image/upload/v1770639359/sarees_den/xtm41kdlrkcbwdpggrg8.jpg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Party" />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <span className="text-white text-sm tracking-[0.3em] uppercase rotate-90 whitespace-nowrap">Reception Wear</span>
             </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
-import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
+// ✅ FIXED: Corrected relative paths to go up two levels
+import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { Search, Heart, ShoppingBag, User, X, LogOut, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
@@ -12,10 +13,10 @@ const Navbar = () => {
   const { cart } = useCart();
   const navigate = useNavigate();
 
-  // Trending/Suggested terms to help users find products faster
+  // Categories list for the dropdown
+  const CATEGORIES = ["Wedding", "Reception", "Festive", "Party", "Banarasi", "Silk"];
   const SUGGESTIONS = ["Wedding", "Reception", "Festive", "Party", "Banarasi", "Silk"];
   
-  // Reusable active link styling logic for NavLink components
   const activeLinkStyle = ({ isActive }) => 
     `transition-all duration-300 pb-1 ${
       isActive 
@@ -28,7 +29,7 @@ const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
-      setSearchQuery(""); // Clear for next use
+      setSearchQuery(""); 
     }
   };
 
@@ -47,7 +48,6 @@ const Navbar = () => {
       {isSearchOpen && (
         <div className="absolute inset-0 h-screen bg-white z-[60] flex flex-col items-center justify-center px-10 animate-in fade-in slide-in-from-top duration-300">
           <div className="w-full max-w-4xl">
-            {/* Search Input Form */}
             <form onSubmit={handleSearch} className="flex items-center gap-4 mb-8">
               <input 
                 autoFocus
@@ -62,7 +62,6 @@ const Navbar = () => {
               />
             </form>
 
-            {/* Suggested Searches Section */}
             <div className="flex flex-wrap gap-4 justify-start">
               <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 w-full mb-2">
                 Suggested Searches:
@@ -88,21 +87,39 @@ const Navbar = () => {
       {/* 2. MAIN NAVBAR CONTENT */}
       <div className="max-w-[1600px] mx-auto px-6 h-20 flex justify-between items-center">
         
-        {/* Left: Navigation Links */}
-        <nav className="hidden lg:flex gap-8 text-[11px] uppercase tracking-[0.3em] font-semibold">
+        {/* ✅ UPDATED LEFT SECTION: Minimalist Navigation with Dropdown */}
+        <nav className="hidden lg:flex flex-1 items-center gap-10 text-[11px] uppercase tracking-[0.3em] font-semibold">
+          <NavLink to="/" className={activeLinkStyle}>
+            Home
+          </NavLink>
+          
           <NavLink to="/shop-all" className={activeLinkStyle}>
-            All Sarees
+            Shop All
           </NavLink>
 
-          <NavLink to="/category/Wedding" className={activeLinkStyle}>
-            Wedding
-          </NavLink>
+          {/* Single Categories Dropdown */}
+          <div className="relative group cursor-pointer py-2">
+            <div className="flex items-center gap-1 hover:text-[#7b1e1e] transition-colors">
+              <span>Categories</span>
+              <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
+            </div>
+            
+            {/* Dropdown Menu */}
+            <div className="absolute top-full left-0 hidden group-hover:block bg-white shadow-2xl border border-gray-50 p-6 w-56 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex flex-col gap-4">
+                {CATEGORIES.map((cat) => (
+                  <Link 
+                    key={cat} 
+                    to={`/category/${cat}`} 
+                    className="text-[10px] tracking-[0.2em] text-gray-500 hover:text-[#7b1e1e] transition-colors border-b border-transparent hover:border-[#7b1e1e]/10 pb-1"
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
 
-          <NavLink to="/category/Reception" className={activeLinkStyle}>
-            Reception
-          </NavLink>
-
-          {/* Admin Tools Dropdown */}
           {isAdmin && (
             <div className="relative group flex items-center gap-1 text-[#7b1e1e] cursor-pointer">
               <span>Seller Panel</span>
@@ -119,25 +136,17 @@ const Navbar = () => {
           )}
         </nav>
 
-        {/* Center: Brand Logo */}
-        <Link to="/" className="text-2xl tracking-[0.4em] uppercase font-light text-[#7b1e1e] text-center">
-          SAREE <span className="font-bold">DEN</span>
-        </Link>
-
-        {/* Right: Action Icons */}
-        <div className="flex items-center gap-6 text-gray-800">
-          {/* Search Trigger */}
-          <Search 
-            onClick={() => setIsSearchOpen(true)} 
-            className="w-5 h-5 cursor-pointer hover:text-[#7b1e1e] transition-colors" 
-          />
-          
-          {/* Wishlist Link */}
-          <Link to="/wishlist">
-            <Heart className="w-5 h-5 hover:text-[#7b1e1e] transition-colors" />
+        {/* Center Section: Main Title */}
+        <div className="flex-grow-0 flex justify-center px-4">
+          <Link to="/" className="text-2xl tracking-[0.4em] uppercase font-light text-[#7b1e1e] whitespace-nowrap">
+            SAREES <span className="font-bold">DEN</span>
           </Link>
-          
-          {/* Shopping Bag with dynamic badge */}
+        </div>
+
+        {/* Right Section: Action Icons */}
+        <div className="flex-1 flex items-center justify-end gap-6 text-gray-800">
+          <Search onClick={() => setIsSearchOpen(true)} className="w-5 h-5 cursor-pointer hover:text-[#7b1e1e] transition-colors" />
+          <Link to="/wishlist"><Heart className="w-5 h-5 hover:text-[#7b1e1e] transition-colors" /></Link>
           <Link to="/cart" className="relative">
             <ShoppingBag className="w-5 h-5 hover:text-[#7b1e1e] transition-colors" />
             {cart?.length > 0 && (
@@ -147,7 +156,6 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* User Auth Section */}
           {user ? (
             <div className="flex items-center gap-4 border-l pl-4 border-gray-200">
               <Link to="/profile">

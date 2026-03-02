@@ -3,21 +3,21 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    /* 🟤 Dark Brown Background with a Metallic Gold top border */
+    /* ✅ FIXED: Background changed to Rich Red (#7b1e1e) with a solid Gold top border */
     <footer 
-      style={{ backgroundColor: 'rgb(14 87 89); ' }} 
+      style={{ backgroundColor: '#7b1e1e' }} 
       className="text-[#F7E7CE] py-16 font-serif mt-auto border-t-[3px] border-[#D4AF37]"
     >
       <div className="max-w-7xl mx-auto px-6">
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
           
-          {/* 1. Brand Section: Pure Gold Heading */}
+          {/* 1. Brand Section: Pure Gold Heading for High Visibility */}
           <div className="space-y-6">
             <h2 className="text-3xl font-bold text-[#D4AF37] tracking-[0.2em] uppercase">
               SAREES DEN
             </h2>
-            <p className="text-sm leading-relaxed opacity-90 text-[#F7E7CE]/80">
+            <p className="text-sm leading-relaxed opacity-90 text-[#F7E7CE]">
               Preserving the art of hand-woven elegance since 1995. We bring the 
               timeless gold-standard heritage of Indian looms to your wardrobe.
             </p>
@@ -41,10 +41,10 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* 2. Navigation: Champagne Links with Gold Hover */}
+          {/* 2. Navigation: Gold Labels with Champagne Links */}
           <div className="grid grid-cols-2 gap-8">
             <div>
-              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6 opacity-80">
+              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6">
                 Collections
               </h4>
               <ul className="space-y-4 text-sm font-medium">
@@ -54,7 +54,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6 opacity-80">
+              <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] mb-6">
                 Experience
               </h4>
               <ul className="space-y-4 text-sm font-medium">
@@ -65,9 +65,9 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* 3. Newsletter: Gold Underline & Champagne Join */}
+          {/* 3. Newsletter: Gold Accents */}
           <div className="space-y-6">
-            <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em] opacity-80">
+            <h4 className="text-[#D4AF37] font-bold uppercase text-[10px] tracking-[0.3em]">
               The Registry
             </h4>
             <p className="text-sm text-[#F7E7CE]/80">
@@ -93,14 +93,14 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* 4. Bottom Section: Muted Gold */}
+        {/* 4. Bottom Section: Copyright in Gold */}
         <div className="border-t border-[#D4AF37]/20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/50">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]">
             © 2026 SAREES DEN.
           </p>
-          <div className="flex gap-8 text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/50">
-            <Link to="/" className="hover:text-white">Privacy</Link>
-            <Link to="/" className="hover:text-white">Terms</Link>
+          <div className="flex gap-8 text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]">
+            <Link to="/" className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/" className="hover:text-white transition-colors">Terms</Link>
           </div>
         </div>
       </div>

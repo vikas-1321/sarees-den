@@ -6,6 +6,10 @@ import Auth from "./pages/Auth";
 import ShopAll from "./pages/ShopAll";
 import CategoryPage from './pages/CategoryPage';
 import SearchPage from "./pages/SearchPage";
+import ProductDetails from "./pages/ProductDetails";
+import OrderSuccess from "./pages/OrderSuccess";
+import Profile from "./pages/Profile";
+
 
 // Common
 import Navbar from "./components/common/Navbar";
@@ -48,6 +52,10 @@ function App() {
             {/* ADD THIS ROUTE - This is what was missing! */}
             <Route path="/category/:categoryName" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+
+            {/* Order Success Route */}
+            <Route path="/order-success" element={<OrderSuccess />} />
 
             {/* Customer protected */}
             <Route
@@ -78,6 +86,14 @@ function App() {
             <Route
               path="/admin/orders"
               element={<AdminRoute><Orders /></AdminRoute>}
+            />
+            <Route 
+              path="/profile" 
+              element={user ? <Profile /> : <Navigate to="/auth" />} 
+            />
+            <Route 
+              path="/my-orders" 
+              element={user ? <UserOrders /> : <Navigate to="/auth" />} 
             />
 
             {/* Fallback - MUST be the last route in the list */}

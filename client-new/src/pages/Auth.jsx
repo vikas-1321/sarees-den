@@ -69,6 +69,9 @@ const Auth = () => {
     <div className="min-h-screen bg-[#fffaf5] flex items-center justify-center px-4 font-serif">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 border border-[#f5e6d3]">
 
+        <button onClick={() => navigate(-1)} className="text-xs uppercase tracking-widest mb-4">
+          ← Back to Shopping
+        </button>
         {/* Heading */}
         <h2 className="text-3xl font-light text-center text-[#7b1e1e] mb-8 uppercase tracking-widest">
           {isLogin ? "Welcome Back" : "Join the Heritage"}
